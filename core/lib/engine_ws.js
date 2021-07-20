@@ -162,7 +162,8 @@ WSEngine.prototype.step = function(requestSpec, ee) {
     // Backwards compatible with previous version of `send` api
     let payload = template(params.capture ? params.payload : params, context);
     if (typeof payload === 'object') {
-      payload = JSON.stringify(payload);
+      if (payload.constructor !== Uint8Array) payload = JSON.stringify(payload);
+      // Uint8Array: we want to send as is and not stringify
     } else {
       payload = payload.toString();
     }
